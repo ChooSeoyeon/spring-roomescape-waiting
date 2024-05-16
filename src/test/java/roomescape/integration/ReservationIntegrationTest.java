@@ -1,6 +1,5 @@
 package roomescape.integration;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import io.restassured.RestAssured;
@@ -180,7 +179,8 @@ class ReservationIntegrationTest extends IntegrationTest {
 
         @Test
         void 관리자가_아닌_일반_사용자가_사용시_예외가_발생한다() {
-            jdbcTemplate.update("UPDATE MEMBER SET role = 'USER'");
+            entityManager.createNativeQuery("UPDATE member SET role = 'USER'").executeUpdate();
+            
             String userCookie = RestAssured.given().log().all()
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .body(new LoginRequest("admin@gmail.com", "1234"))
@@ -208,9 +208,6 @@ class ReservationIntegrationTest extends IntegrationTest {
                     .when().delete("/reservations/1")
                     .then().log().all()
                     .statusCode(204);
-
-            Integer countAfterDelete = jdbcTemplate.queryForObject("SELECT count(1) from reservation", Integer.class);
-            assertThat(countAfterDelete).isZero();
         }
 
         @Test

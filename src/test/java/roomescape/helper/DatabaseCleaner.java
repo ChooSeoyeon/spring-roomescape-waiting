@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DatabaseCleaner {
     @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public DatabaseCleaner(EntityManager entityManager) {
         this.entityManager = entityManager;

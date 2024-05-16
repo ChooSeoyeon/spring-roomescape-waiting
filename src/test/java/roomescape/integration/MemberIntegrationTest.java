@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-class MemberControllerTest extends IntegrationTest {
+class MemberIntegrationTest extends IntegrationTest {
     @Nested
     @DisplayName("사용자 목록 조회 API")
     class FindAllMember {

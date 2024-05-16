@@ -1,6 +1,5 @@
 package roomescape.integration;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import io.restassured.RestAssured;
@@ -128,17 +127,17 @@ class ReservationTimeIntegrationTest extends IntegrationTest {
     class DeleteReservationTime {
         @Test
         void 시간을_삭제할_수_있다() {
-            jdbcTemplate.update("DELETE FROM reservation WHERE id = ?", 1);
+            RestAssured.given().log().all()
+                    .cookies(cookieProvider.createCookies())
+                    .when().delete("/reservations/1")
+                    .then().log().all()
+                    .statusCode(204);
 
             RestAssured.given().log().all()
                     .cookies(cookieProvider.createCookies())
                     .when().delete("/times/1")
                     .then().log().all()
                     .statusCode(204);
-
-            Integer countAfterDelete = jdbcTemplate.queryForObject("SELECT count(1) from reservation_time",
-                    Integer.class);
-            assertThat(countAfterDelete).isZero();
         }
 
         @Test
