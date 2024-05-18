@@ -30,7 +30,7 @@ public class JwtTokenProvider {
 
     public String createToken(MemberEmail memberEmail, MemberRole memberRole) {
         return Jwts.builder()
-                .setSubject(memberEmail.getAddress())
+                .setSubject(memberEmail.getEmail())
                 .claim("role", memberRole.name())
                 .setExpiration(calculateExpiredAt())
                 .signWith(SignatureAlgorithm.HS256, secretKey)

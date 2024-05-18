@@ -9,14 +9,14 @@ public class ThemeRequest {
     private final String thumbnail;
 
     public ThemeRequest(String name, String description, String thumbnail) {
-        validate(name, description, thumbnail);
+        validate(name);
         this.name = name;
         this.description = description;
         this.thumbnail = thumbnail;
     }
 
-    private void validate(String name, String description, String thumbnail) {
-        if (name.isBlank() || description.isBlank() || thumbnail.isBlank()) {
+    private void validate(String name) {
+        if (name.isBlank()) {
             throw new IllegalArgumentException();
         }
     }

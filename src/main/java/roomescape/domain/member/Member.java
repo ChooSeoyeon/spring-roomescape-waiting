@@ -1,5 +1,6 @@
 package roomescape.domain.member;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -7,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import roomescape.exception.member.NullMemberRoleException;
 
 @Entity
 public class Member {
@@ -20,12 +22,14 @@ public class Member {
     @Embedded
     private MemberPassword password;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private MemberRole role;
 
     public Member() {
     }
 
     public Member(Long id, MemberName name, MemberEmail email, MemberPassword password, MemberRole role) {
+        validateNonNull(role);
         this.id = id;
         this.name = name;
         this.email = email;
@@ -35,6 +39,12 @@ public class Member {
 
     public Member(MemberName name, MemberEmail email, MemberPassword password, MemberRole role) {
         this(null, name, email, password, role);
+    }
+
+    private void validateNonNull(MemberRole role) {
+        if (role == null) {
+            throw new NullMemberRoleException();
+        }
     }
 
     public boolean isDifferentPassword(MemberPassword otherPassword) {
