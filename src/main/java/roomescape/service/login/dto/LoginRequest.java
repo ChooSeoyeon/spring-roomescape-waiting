@@ -2,6 +2,8 @@ package roomescape.service.login.dto;
 
 import roomescape.domain.member.MemberEmail;
 import roomescape.domain.member.MemberPassword;
+import roomescape.exception.member.NullMemberEmailException;
+import roomescape.exception.member.NullMemberPasswordException;
 
 public class LoginRequest {
     private final String email;
@@ -14,8 +16,11 @@ public class LoginRequest {
     }
 
     private void validate(String email, String password) {
-        if (email.isBlank() || password.isBlank()) {
-            throw new IllegalArgumentException();
+        if (email.isBlank()) {
+            throw new NullMemberEmailException();
+        }
+        if (password.isBlank()) {
+            throw new NullMemberPasswordException();
         }
     }
 

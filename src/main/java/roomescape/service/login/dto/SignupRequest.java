@@ -5,6 +5,9 @@ import roomescape.domain.member.MemberEmail;
 import roomescape.domain.member.MemberName;
 import roomescape.domain.member.MemberPassword;
 import roomescape.domain.member.MemberRole;
+import roomescape.exception.member.NullMemberEmailException;
+import roomescape.exception.member.NullMemberNameException;
+import roomescape.exception.member.NullMemberPasswordException;
 
 public class SignupRequest {
     private final String email;
@@ -19,8 +22,14 @@ public class SignupRequest {
     }
 
     private void validate(String email, String password, String name) {
-        if (email.isBlank() || password.isBlank() || name.isBlank()) {
-            throw new IllegalArgumentException();
+        if (email.isBlank()) {
+            throw new NullMemberEmailException();
+        }
+        if (password.isBlank()) {
+            throw new NullMemberPasswordException();
+        }
+        if (name.isBlank()) {
+            throw new NullMemberNameException();
         }
     }
 

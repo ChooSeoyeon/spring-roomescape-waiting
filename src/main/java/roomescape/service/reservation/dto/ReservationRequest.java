@@ -8,6 +8,9 @@ import roomescape.domain.reservation.Reservation;
 import roomescape.domain.reservation.ReservationStatus;
 import roomescape.domain.reservationtime.ReservationTime;
 import roomescape.domain.theme.Theme;
+import roomescape.exception.reservation.NullDateException;
+import roomescape.exception.reservation.NullThemeIdException;
+import roomescape.exception.reservation.NullTimeIdException;
 
 public class ReservationRequest {
     private final LocalDate date;
@@ -27,10 +30,24 @@ public class ReservationRequest {
         this.themeId = request.getThemeId();
     }
 
-    public void validate(String date, String timeId, String themeId) {
-        if (date == null || timeId == null || themeId == null) {
-            throw new IllegalArgumentException();
+    private void validate(String date, String timeId, String themeId) {
+        validateNull(date, timeId, themeId);
+        validateType(date);
+    }
+
+    private void validateNull(String date, String timeId, String themeId) {
+        if (date == null) {
+            throw new NullDateException();
         }
+        if (timeId == null) {
+            throw new NullTimeIdException();
+        }
+        if (themeId == null) {
+            throw new NullThemeIdException();
+        }
+    }
+
+    private void validateType(String date) {
         try {
             LocalDate.parse(date);
         } catch (DateTimeException e) {
